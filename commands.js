@@ -22,7 +22,7 @@ const questions = [
         message: 'Username: '
     },
     {
-        type: 'input',
+        type: 'password',
         name: 'password',
         message: 'Password: '
     }
