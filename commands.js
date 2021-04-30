@@ -46,7 +46,7 @@ program
 
 //find
 program
-    .command('find')
+    .command('find <name>')
     .alias('f')
     .description('Find a password')
     .action(name => findPassword(name));

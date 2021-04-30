@@ -13,9 +13,7 @@ const db = mongoose.connect('mongodb://localhost/pwd-mng-cli', {
 clear();
 
 console.log(
-    chalk.cyan(
-        figlet.textSync('Pwd-mng-cli', {horizontalLayout: 'fit'})
-    )  
+    chalk.cyan('Password Manager:-')
 );
 
 //add Password
@@ -40,10 +38,19 @@ const addPassword = (passwordin) => {
 
 //find Password
 const findPassword = (application) => {
+    const hash = {
+        iv: String,
+        content: String
+    };
     const search = new RegExp(application, 'i');
     Password.find({$or: [{application: search}]})
         .then(password => {
-            console.info(password);
+            hash.iv = password[0].iv;
+            hash.content = password[0].password;
+            const text = decrypt(hash);
+            console.info("\t" + chalk.green(password[0].application + ":-"))
+            console.info("\t  username: " + password[0].username);
+            console.info("\t  password: " + text + "\n");
             mongoose.connection.close();
         })
 }
