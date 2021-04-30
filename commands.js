@@ -40,7 +40,8 @@ program
     .alias('a')
     .description('Add a new password')
     .action(() => {
-        prompt(questions).then(answer => addPassword(answer));
+        prompt(questions)
+            .then(answer => addPassword(answer));
     });
 
 //find
@@ -56,7 +57,8 @@ program
     .alias('u')
     .description('Update a Password')
     .action(_id => {
-        prompt(questions).then(answer => updatePassword(_id, answer));
+        prompt(questions)
+            .then(answer => updatePassword(_id, answer));
     });
 
 //delete
