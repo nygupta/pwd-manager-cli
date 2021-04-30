@@ -3,6 +3,7 @@ const Password = require('./models/password');
 const chalk = require('chalk');
 const figlet = require('figlet');
 const clear = require('clear');
+const { encrypt, decrypt } = require('./crypto');
 mongoose.Promise = global.Promise;
 const db = mongoose.connect('mongodb://localhost/pwd-mng-cli', {
     useNewUrlParser: true, 
@@ -18,9 +19,20 @@ console.log(
 );
 
 //add Password
-const addPassword = (password) => {
-    Password.create(password) 
-        .then(password => {
+const addPassword = (passwordin) => {
+    const hash = encrypt(passwordin.password);
+    const passwordObj = {
+        application: String,
+        username: String,
+        password: String,
+        iv: String
+    }
+    passwordObj.application = passwordin.application;
+    passwordObj.username = passwordin.username;
+    passwordObj.password = hash.content.toString();
+    passwordObj.iv = hash.iv.toString();
+    Password.create(passwordObj) 
+        .then(passwordObj => {
             console.info('New Password added!');
             mongoose.connection.close();
         });
