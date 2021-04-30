@@ -75,10 +75,20 @@ const removePassword = (_id) => {
 
 //list all password
 const listPasswords = () => {
+    var hash = {
+        iv: String,
+        content: String
+    };
     Password.find()
         .then(password => {
-            console.info(password);
-            console.info(`${password.length} Passwords!`);
+            for (var i = 0; i < password.length; i++) {
+                hash.iv = password[i].iv;
+                hash.content = password[i].password;
+                const text = decrypt(hash);
+                console.info("\t" + chalk.green(password[i].application + ":-"))
+                console.info("\t  username: " + password[i].username);
+                console.info("\t  password: " + text + "\n");
+            }
             mongoose.connection.close();
         });
 }
