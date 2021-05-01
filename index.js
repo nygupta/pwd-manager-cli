@@ -21,11 +21,13 @@ const addPassword = (passwordin) => {
     const hash = encrypt(passwordin.password);
     const passwordObj = {
         application: String,
+        email: String,
         username: String,
         password: String,
         iv: String
     }
     passwordObj.application = passwordin.application;
+    passwordObj.email = passwordin.email;
     passwordObj.username = passwordin.username;
     passwordObj.password = hash.content.toString();
     passwordObj.iv = hash.iv.toString();
@@ -48,7 +50,8 @@ const findPassword = (application) => {
             hash.iv = password[0].iv;
             hash.content = password[0].password;
             const text = decrypt(hash);
-            console.info("\t" + chalk.green(password[0].application + ":-"))
+            console.info("\t" + chalk.green(password[0].application + ":-"));
+            console.info("\t  email-id: " + password[0].email);
             console.info("\t  username: " + password[0].username);
             console.info("\t  password: " + text + "\n");
             mongoose.connection.close();
@@ -85,7 +88,8 @@ const listPasswords = () => {
                 hash.iv = password[i].iv;
                 hash.content = password[i].password;
                 const text = decrypt(hash);
-                console.info("\t" + chalk.green(password[i].application + ":-"))
+                console.info("\t" + chalk.green(password[i].application + ":-"));
+                console.info("\t  email-id: " + password[i].email);
                 console.info("\t  username: " + password[i].username);
                 console.info("\t  password: " + text + "\n");
             }

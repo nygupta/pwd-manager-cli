@@ -17,6 +17,11 @@ const questions = [
         message: 'Application: '
     },
     {
+        type: 'text',
+        name: 'email',
+        message: 'Email ID: '
+    },
+    {
         type: 'input',
         name: 'username',
         message: 'Username: '
@@ -25,7 +30,7 @@ const questions = [
         type: 'password',
         name: 'password',
         message: 'Password: '
-    }
+    },
 ]
 
 //version
@@ -46,10 +51,10 @@ program
 
 //find
 program
-    .command('find <name>')
+    .command('find <application>')
     .alias('f')
     .description('Find a password')
-    .action(name => findPassword(name));
+    .action(application => findPassword(application));
 
 //update
 program
