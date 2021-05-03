@@ -18,23 +18,35 @@ console.log(
 
 //add Password
 const addPassword = (passwordin) => {
-    const hash = encrypt(passwordin.password);
-    const passwordObj = {
-        application: String,
-        email: String,
-        username: String,
-        password: String,
-        iv: String
-    }
-    passwordObj.application = passwordin.application;
-    passwordObj.email = passwordin.email;
-    passwordObj.username = passwordin.username;
-    passwordObj.password = hash.content.toString();
-    passwordObj.iv = hash.iv.toString();
-    Password.create(passwordObj) 
-        .then(passwordObj => {
-            console.info('New Password added!');
-            mongoose.connection.close();
+    const search = new RegExp(passwordin.application, 'i');
+    Password.find({$or: [{application: search}]})
+        .then(password => {
+            if (password.length == 0) {
+                const hash = encrypt(passwordin.password);
+                var passwordObj = {
+                    _id: String,
+                    application: String,
+                    email: String,
+                    username: String,
+                    password: String,
+                    iv: String
+                }
+                passwordObj._id = passwordin.application;
+                passwordObj.application = passwordin.application;
+                passwordObj.email = passwordin.email;
+                passwordObj.username = passwordin.username;
+                passwordObj.password = hash.content.toString();
+                passwordObj.iv = hash.iv.toString();
+                Password.create(passwordObj) 
+                    .then(passwordObj => {
+                        console.info('New Password added!');
+                        mongoose.connection.close();
+                    });
+            }
+            else {
+                console.info(chalk.red("Application already exist!"));
+                mongoose.connection.close();
+            }
         });
 }
 
@@ -55,7 +67,7 @@ const findPassword = (application) => {
             console.info("\t  username: " + password[0].username);
             console.info("\t  password: " + text + "\n");
             mongoose.connection.close();
-        })
+        });
 }
 
 //update password
@@ -93,6 +105,7 @@ const listPasswords = () => {
                 console.info("\t  username: " + password[i].username);
                 console.info("\t  password: " + text + "\n");
             }
+            console.info(chalk.yellow(password.length + " Applications found!"));
             mongoose.connection.close();
         });
 }
