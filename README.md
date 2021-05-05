@@ -1,9 +1,9 @@
-# Password Manager CLI
+# Password Manager CLI:-
 
 Command line interface for managing passwords.
 
 
-## Installation
+## Installation:-
 
 Install the dependencies
 
